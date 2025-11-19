@@ -113,16 +113,16 @@
 
 ## 1. Configuracion de Apache en Docker y Podman 
 	comandos:
-	- mkdir -p /home/andres/proyectoFinal/apache/public-html
+	- mkdir -p /home/andres/proyectoFinalInfra/containers/apache/public-html
 	* Estructura del proyecto
 	- echo "<h1>Saludos desde Apache en Docker y Podman</h1>" > /home/andres/proyectoFinal/apache/public-html/index.html
 	* Se crea el archivo HTML
-	- sudo cp /home/andres/proyectoFinal/apache/public-html/index.html /srv/apache/	
+	- sudo cp /home/andres/proyectoFinalInfra/containers/apache/public-html/index.html /srv/apache/	
 	* Se mueve al LVM
 
 ## 2. Crear Dokerfile y Containerfile para Apache
 	comando: 
-	- nano /home/andres/proyectoFinal/apache/Dockerfile
+	- nano /home/andres/proyectoFinalInfra/containers/apache/Dockerfile
 	* contenido para Dockerfile:
 	- FROM httpd:2.4 
 	  COPY public-html/ /usr/local/apache2/htdocs
