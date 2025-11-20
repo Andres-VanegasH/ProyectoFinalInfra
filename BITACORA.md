@@ -189,3 +189,14 @@
 
 
 
+## 6. Ejecucion de Podman
+	comando:
+	- podman run -d --name nginx_server_podman -p 8080:80 -v /srv/nginx/html:/usr/share/nginx/html:ro,z -v /home/andres/ProyectoFinalInfra/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro,z docker.io/library/nginx:latest
+	* Ejecuta la instancia especificando el registro de docker
+
+## 7. Verificacion de estaado y contenido
+	comando:
+	- podman ps
+	* verificamos que el estado este en UP
+	- curl localhost
+	* Devuelve el HTML
