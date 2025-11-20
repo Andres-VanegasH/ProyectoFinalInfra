@@ -109,7 +109,7 @@
 	- sudo apt install -y podman
 
 
-### Tercero: Creacion de imagenes personalizadas
+### Tercero: Creacion de imagen personalizada para Apache 
 
 ## 1. Configuracion de Apache en Docker y Podman 
 	comandos:
@@ -120,7 +120,7 @@
 	- sudo cp /home/andres/proyectoFinalInfra/containers/apache/public-html/index.html /srv/apache/	
 	* Se mueve al LVM
 
-## 2. Crear Dokerfile y Containerfile para Apache
+# 2. Crear Dokerfile y Containerfile para Apache
 	comando: 
 	- nano /home/andres/proyectoFinalInfra/containers/apache/Dockerfile
 	* contenido para Dockerfile:
@@ -153,3 +153,39 @@
 	* Probar
 	- curl http://localhost:8081
 	* Muestra el HTML
+
+
+
+### Quinto: Creacion de imagen para Nginx		
+
+## 1. Creacion del directorio y contenido
+	comando:
+	- sudo mkdir -p /srv/nginx/html
+	* Directorio para el volumen
+	- mkdir -p /home/andres/ProyectoFinalInfra/nginx/conf.d
+	* Directorio para la configuracion de Nginx
+
+## 2. Archivos de configuracion
+	comando:
+	- nano /home/andres/ProyectoFinalInfra/nginx/conf.d/default.conf
+	* El contenido del archivo es la configuracion minima y estandar para Nginx
+
+## 3. Contenido de Prueba
+	comando:
+	- echo "<h1>Nginx funciona correctamente</h1>" > /srv/nginx/html/index.html
+	* Crea una pagina HTML simple para verificar persistencia
+
+## 4. Ejecutar el contendor docker para Nginx
+	comando:
+	- docker run -d --name nginx_server -p 80:80 -v /srv/nginx/html:/usr/share/nginx/html:ro -v /home/andres/ProyectoFinalInfra/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro nginx:latest 
+	* Imagen oficial de Nginx y montaje de la configuracion
+
+## 5. Verificar esatdo y contenido de Nginx
+	comando:
+	- docker ps
+	* Verificar que el estado este en UP
+	- curl localhost 
+	* Devuelve el HTML 
+
+
+
