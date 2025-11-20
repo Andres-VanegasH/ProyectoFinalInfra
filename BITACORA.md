@@ -154,6 +154,84 @@
 	- curl http://localhost:8081
 	* Muestra el HTML
 
+### Cuarto: Creacion de imagen para Mysql usando Docker y Podman
+
+## 1. Creacion de imagen con Docker
+
+# 1.1. Persistencia de datos
+	comando: 
+	- docker volume create mysql_data
+	* directorio interno donde se guardan los datos, garantizando la persistencia
+
+
+# 1.2. Montar volumen en el contenedor
+	comando:
+	- docker run -d --name mysql-prod -p 3306:3306 -e MYSQL_ROOT_PASSWORD=1234 -v mysql_data_volume:/var/lib/mysql mysql:latest 
+	* Inicia el contenedor con lo necesario para su utilizacion
+
+# 1.3. Acceder a la base de datos
+	comandos: 
+	- docker exec -it mysql-db bash
+	- mysql -u root -p
+	* Se conecta al cliente MySQL
+
+# 1.4. Crear base de datos de prueba
+	comandooo:
+	- CREATE DATABASE persistencia_test;
+	- SHOW DATABASES;
+	* Sale persistencia_test en la lista
+
+# 1.5. Simular perdida 
+	comando:
+	- docker stop mysql-prod
+	- docker rm mysql-prod
+	* Borramos el contenedor, pero el volumen con los datos sigue ahi
+
+# 1.6. Recrear el contendor 
+	* Se incia el contenedor y dentro de la base de datos verificamos
+	comando:
+	- SHOW DATABASES;
+	* Vemos persistencia_test
+
+
+## 2. Creacion de imagen en podman
+
+# 2.1. Persistencia de datos
+	comando: 
+	- podman volume create podman_mysql_data
+	* directorio interno donde se guardan los datos para la persistencia  
+
+#2.2. Montar volumen en el contendor 
+	comado:
+	- podman run -d --name mysql-podman -p 3307:3306 -e MYSQL_ROOT_PASSWORD=1234 -v podman_mysql_data:/var/lib/mysql docker.io/library/mysql:latest
+	* Inicia el contendor con todo lo necesario para su utulizacion 
+
+#2.3. Acceder a la basa de datos 
+	comando:
+	- docker exec -t mysql/podman bash 
+	- mysql -u root -p 
+	*  se conecta al cliente MySQL
+
+#2.4. Crear base de datos de prueba
+	comando: 
+	- CREATE DATABASE podman_test;
+	- SHOW DATABASES;
+	* sale podman_test en la lista
+
+
+# 2.5. Simular Perdida
+	comando:
+	- podman stop mysql-podman
+	- podman rm mysql-podman 
+	* Borramos el contendor, pero el volumen con los datos sigue ahi 
+
+# 2.6. Recrear el contenedor
+	* Se inicia el contendor y verificamos dentro de la base de datos
+	comando: 
+	- SHOW DATABASES;
+	* vemos podman_test
+
+
 
 
 ### Quinto: Creacion de imagen para Nginx		
