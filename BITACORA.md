@@ -1,4 +1,4 @@
-### Primero: Configuracion de Almacenamiento Persistente (RAID 1 y LVM)
+# Primero: Configuracion de Almacenamiento Persistente (RAID 1 y LVM)
 
 ## 1. Verificar discos disponibles
 	comando: 
@@ -16,20 +16,20 @@
 
 ## 3. Creacion de los RAID 1
 	
-# RAID 1 para Apache (/de/md0)
+## RAID 1 para Apache (/de/md0)
 	comando:
 	- sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb /dev/sdc
 	* Se crea un raid de nivel 1, con dos discos y escogemos los discos fisicos.
 
-# RAid 1 para Mysql (/dev/md1)
+## RAid 1 para Mysql (/dev/md1)
 	comando:
 	- sudo mdadm --create /dev/md1 --level=1 --raid-devices=2 /dev/sdd /dev/sde
 
-# RAID 1 para Nginx (/dev/md2)
+## RAID 1 para Nginx (/dev/md2)
 	comando: 
 	- sudo mdadm --create /dev/md2 --level=1 --raid-devices=2 /dev/sdf /dev/sdg
 
-# Verificacion de los RAID
+## Verificacion de los RAID
 	comando:
 	- cat /proc/mdstat
 	* se espera la siguiente salida: 
@@ -94,7 +94,7 @@
 	* si no muestra error, todo esta correcto
 
 
-### Segundo: Configuracion de Docker y Podman
+# Segundo: Configuracion de Docker y Podman
 
 ## 1. Instalacion de Docker
 	comandos: 
@@ -109,7 +109,7 @@
 	- sudo apt install -y podman
 
 
-### Tercero: Creacion de imagen personalizada para Apache 
+# Tercero: Creacion de imagen personalizada para Apache 
 
 ## 1. Configuracion de Apache en Docker y Podman 
 	comandos:
@@ -154,40 +154,40 @@
 	- curl http://localhost:8081
 	* Muestra el HTML
 
-### Cuarto: Creacion de imagen para Mysql usando Docker y Podman
+# Cuarto: Creacion de imagen para Mysql usando Docker y Podman
 
 ## 1. Creacion de imagen con Docker
 
-# 1.1. Persistencia de datos
+## 1.1. Persistencia de datos
 	comando: 
 	- docker volume create mysql_data
 	* directorio interno donde se guardan los datos, garantizando la persistencia
 
 
-# 1.2. Montar volumen en el contenedor
+## 1.2. Montar volumen en el contenedor
 	comando:
 	- docker run -d --name mysql-prod -p 3306:3306 -e MYSQL_ROOT_PASSWORD=1234 -v mysql_data_volume:/var/lib/mysql mysql:latest 
 	* Inicia el contenedor con lo necesario para su utilizacion
 
-# 1.3. Acceder a la base de datos
+## 1.3. Acceder a la base de datos
 	comandos: 
 	- docker exec -it mysql-db bash
 	- mysql -u root -p
 	* Se conecta al cliente MySQL
 
-# 1.4. Crear base de datos de prueba
+## 1.4. Crear base de datos de prueba
 	comandooo:
 	- CREATE DATABASE persistencia_test;
 	- SHOW DATABASES;
 	* Sale persistencia_test en la lista
 
-# 1.5. Simular perdida 
+## 1.5. Simular perdida 
 	comando:
 	- docker stop mysql-prod
 	- docker rm mysql-prod
 	* Borramos el contenedor, pero el volumen con los datos sigue ahi
 
-# 1.6. Recrear el contendor 
+## 1.6. Recrear el contendor 
 	* Se incia el contenedor y dentro de la base de datos verificamos
 	comando:
 	- SHOW DATABASES;
@@ -196,36 +196,36 @@
 
 ## 2. Creacion de imagen en podman
 
-# 2.1. Persistencia de datos
+## 2.1. Persistencia de datos
 	comando: 
 	- podman volume create podman_mysql_data
 	* directorio interno donde se guardan los datos para la persistencia  
 
-#2.2. Montar volumen en el contendor 
+## 2.2. Montar volumen en el contendor 
 	comado:
 	- podman run -d --name mysql-podman -p 3307:3306 -e MYSQL_ROOT_PASSWORD=1234 -v podman_mysql_data:/var/lib/mysql docker.io/library/mysql:latest
 	* Inicia el contendor con todo lo necesario para su utulizacion 
 
-#2.3. Acceder a la basa de datos 
+## 2.3. Acceder a la basa de datos 
 	comando:
 	- docker exec -t mysql/podman bash 
 	- mysql -u root -p 
 	*  se conecta al cliente MySQL
 
-#2.4. Crear base de datos de prueba
+## 2.4. Crear base de datos de prueba
 	comando: 
 	- CREATE DATABASE podman_test;
 	- SHOW DATABASES;
 	* sale podman_test en la lista
 
 
-# 2.5. Simular Perdida
+## 2.5. Simular Perdida
 	comando:
 	- podman stop mysql-podman
 	- podman rm mysql-podman 
 	* Borramos el contendor, pero el volumen con los datos sigue ahi 
 
-# 2.6. Recrear el contenedor
+## 2.6. Recrear el contenedor
 	* Se inicia el contendor y verificamos dentro de la base de datos
 	comando: 
 	- SHOW DATABASES;
@@ -234,7 +234,7 @@
 
 
 
-### Quinto: Creacion de imagen para Nginx		
+# Quinto: Creacion de imagen para Nginx		
 
 ## 1. Creacion del directorio y contenido
 	comando:
